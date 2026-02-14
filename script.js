@@ -264,8 +264,12 @@ function saveGameState() {
 function loadGameState() {
     const saved = localStorage.getItem('valentineGameState');
     if (saved) {
-        gameState = { ...gameState, ...JSON.parse(saved) };
-        goToSection(gameState.currentSection);
+        const loadedState = JSON.parse(saved);
+        gameState = { ...gameState, ...loadedState };
+        // Only restore section if user has made progress (not on home screen)
+        if (loadedState.currentSection > 0) {
+            goToSection(gameState.currentSection);
+        }
     }
 }
 
