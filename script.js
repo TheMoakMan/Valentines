@@ -177,6 +177,11 @@ function goToSection(sectionIndex) {
 
         // Update nav menu items
         updateNavMenu();
+
+        // If navigating to cards section and all cards are scratched, show final message
+        if (sectionIndex === 4 && gameState.cardsScratched.every(scratched => scratched)) {
+            document.getElementById('finalMessage').style.display = 'block';
+        }
     }
 }
 
@@ -792,6 +797,20 @@ function initScratchCards() {
 
 function initScratchCard(cardNum) {
     const canvas = document.getElementById(`scratchCanvas${cardNum}`);
+
+    // If card was already scratched, remove the canvas entirely
+    if (gameState.cardsScratched[cardNum - 1]) {
+        if (canvas) {
+            canvas.remove();
+        }
+        return;
+    }
+
+    // If no canvas exists (already removed), skip initialization
+    if (!canvas) {
+        return;
+    }
+
     const ctx = canvas.getContext('2d');
 
     // Set canvas size to match the card-activity container
