@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Happy Valentine's Day! 💕</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css?v=3">
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-background" id="heartsBackground"></div>
+
+    <!-- Navigation Menu (dynamically populated) -->
+    <nav class="nav-menu" id="navMenu" style="display: none;">
+        <button class="nav-toggle" onclick="toggleNav()">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="nav-items" id="navItems">
+            <!-- Items added dynamically based on completed games -->
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- SECTION 0: Home Screen -->
+        <section id="home" class="section active">
+            <div class="content-card home-card">
+                <h1 class="romantic-title">Happy Valentine's Day!</h1>
+                <p class="romantic-subtitle">I made you something special... 💕</p>
+
+                <!-- Start Journey Button -->
+                <button class="btn-journey" id="startJourneyBtn" onclick="startJourney()">
+                    Start Here my Princess
+                    <i class="bi bi-heart-fill"></i>
+                </button>
+
+                <!-- Game Cards Grid -->
+                <div class="game-cards-grid" id="gameCardsGrid">
+                    <div class="game-card locked" id="gameCard1" onclick="playGame(1)">
+                        <div class="lock-overlay">
+                            <i class="bi bi-lock-fill lock-icon"></i>
+                        </div>
+                        <div class="game-card-icon">
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
+                        </div>
+                        <h3 class="game-card-title">Connections</h3>
+                        <p class="game-card-desc">Find groups of related words</p>
+                        <div class="game-card-status" id="status1">
+                            <i class="bi bi-lock-fill"></i> Locked
+                        </div>
+                    </div>
+
+                    <div class="game-card locked" id="gameCard2" onclick="playGame(2)">
+                        <div class="lock-overlay">
+                            <i class="bi bi-lock-fill lock-icon"></i>
+                        </div>
+                        <div class="game-card-icon">
+                            <i class="bi bi-search-heart"></i>
+                        </div>
+                        <h3 class="game-card-title">Strands</h3>
+                        <p class="game-card-desc">Coffee word search</p>
+                        <div class="game-card-status" id="status2">
+                            <i class="bi bi-lock-fill"></i> Locked
+                        </div>
+                    </div>
+
+                    <div class="game-card locked" id="gameCard3" onclick="playGame(3)">
+                        <div class="lock-overlay">
+                            <i class="bi bi-lock-fill lock-icon"></i>
+                        </div>
+                        <div class="game-card-icon">
+                            <i class="bi bi-alphabet"></i>
+                        </div>
+                        <h3 class="game-card-title">Wordle</h3>
+                        <p class="game-card-desc">Guess our special word</p>
+                        <div class="game-card-status" id="status3">
+                            <i class="bi bi-lock-fill"></i> Locked
+                        </div>
+                    </div>
+
+                    <div class="game-card locked" id="gameCard4" onclick="playGame(4)">
+                        <div class="lock-overlay">
+                            <i class="bi bi-lock-fill lock-icon"></i>
+                        </div>
+                        <div class="game-card-icon">
+                            <i class="bi bi-gift-fill"></i>
+                        </div>
+                        <h3 class="game-card-title">Surprises</h3>
+                        <p class="game-card-desc">Your date night awaits!</p>
+                        <div class="game-card-status" id="status4">
+                            <i class="bi bi-lock-fill"></i> Locked
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Connections Game -->
+        <section id="connections" class="section">
+            <div class="content-card">
+                <h2 class="game-title">Our Connections</h2>
+                <p class="game-subtitle">Find groups of 4 related words</p>
+
+                <!-- Lives Display -->
+                <div class="lives-display">
+                    <span class="lives-label">Hearts:</span>
+                    <div class="hearts-container" id="connectionsHearts">
+                        <i class="bi bi-heart-fill"></i>
+                        <i class="bi bi-heart-fill"></i>
+                        <i class="bi bi-heart-fill"></i>
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+                </div>
+
+                <!-- Found Categories -->
+                <div class="found-categories" id="foundCategories"></div>
+
+                <!-- Words Grid -->
+                <div class="connections-grid" id="connectionsGrid"></div>
+
+                <!-- Controls -->
+                <div class="game-controls">
+                    <button class="btn-secondary" onclick="shuffleWords()">
+                        <i class="bi bi-shuffle"></i> Shuffle
+                    </button>
+                    <button class="btn-secondary" onclick="deselectAll()">
+                        <i class="bi bi-x-circle"></i> Deselect All
+                    </button>
+                    <button class="btn-primary" id="submitConnectionsBtn" onclick="submitConnections()" disabled>
+                        Submit
+                    </button>
+                </div>
+
+                <!-- Next Button (hidden until complete) -->
+                <button class="btn-next" id="connectionsNext" onclick="goToSection(2)" style="display: none;">
+                    Next Game <i class="bi bi-arrow-right-heart-fill"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Strands Game -->
+        <section id="strands" class="section">
+            <div class="content-card">
+                <!-- Found Words (populated dynamically as words are found) -->
+                <div class="found-words" id="foundWords">
+                    <p class="words-hint">Theme: Wakey Wakey</p>
+                </div>
+
+                <!-- Letter Grid -->
+                <div class="strands-grid" id="strandsGrid"></div>
+
+                <!-- Current Word -->
+                <div class="current-word" id="currentWord"></div>
+
+                <!-- Controls -->
+                <div class="game-controls">
+                    <button class="btn-secondary" onclick="clearStrandsSelection()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Clear
+                    </button>
+                    <button class="btn-primary" onclick="submitStrandsWord()">
+                        <i class="bi bi-check-circle"></i> Submit
+                    </button>
+                </div>
+
+                <!-- Next Button -->
+                <button class="btn-next" id="strandsNext" onclick="goToSection(3)" style="display: none;">
+                    Next Game <i class="bi bi-arrow-right-heart-fill"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Wordle Game -->
+        <section id="wordle" class="section">
+            <div class="content-card">
+                <h2 class="game-title">Our Word</h2>
+                <p class="game-subtitle">Guess the special 5-letter word</p>
+
+                <!-- Wordle Grid -->
+                <div class="wordle-grid" id="wordleGrid"></div>
+
+                <!-- Keyboard -->
+                <div class="wordle-keyboard" id="wordleKeyboard"></div>
+
+                <!-- Next Button -->
+                <button class="btn-next" id="wordleNext" onclick="goToSection(4)" style="display: none;">
+                    Your Surprise Awaits! <i class="bi bi-gift-fill"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 4: All Scratch Cards -->
+        <section id="card1" class="section">
+            <div class="content-card">
+                <h2 class="romantic-title">Your Date Night Surprises!</h2>
+                <p class="romantic-subtitle">Scratch to reveal each date... 💝</p>
+
+                <div class="cards-container">
+                    <!-- Card 1 -->
+                    <div class="scratch-card" id="scratchCard1">
+                        <h3 class="card-name">Coffee & Bible Date</h3>
+                        <div class="scratch-content">
+                            <div class="card-header">
+                                <div class="card-detail">
+                                    <i class="bi bi-cash"></i>
+                                    <span id="amount1">Free</span>
+                                    <i class="bi bi-clock"></i>
+                                    <span id="time1">Any</span>
+                                </div>
+                            </div>
+                            <div class="card-activity" style="position: relative;">
+                                <canvas id="scratchCanvas1" class="scratch-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></canvas>
+                                <p id="activity1">Sit down with your favorite flavor of latte made at home or bought from your cafe of choice. Grab your husband and the word of God and enjoy reading together, laughing, praying and delighting in the Lord's and each other's presence.</p>
+                            </div>
+                            <div class="card-icon">
+                                <i id="icon1" class="bi bi-cup-hot"></i>
+                                <i class="bi bi-book"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="scratch-card" id="scratchCard2">
+                        <h3 class="card-name">Steamy Time</h3>
+                        <div class="scratch-content">
+                            <div class="card-header">
+                                <div class="card-detail">
+                                    <i class="bi bi-cash"></i>
+                                    <span id="amount2">Free</span>
+                                    <i class="bi bi-clock"></i>
+                                    <span id="time2">Any</span>
+                                </div>
+                            </div>
+                            <div class="card-activity" style="position: relative;">
+                                <canvas id="scratchCanvas2" class="scratch-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></canvas>
+                                <p id="activity2">Enjoy laying back easy getting funky with a refreshing round of mid day passion. NO CLOTHES ALLOWED. Work each other up nice and slow making sure to take time on the most delicate of spots. You won't be able to stop until you make each other.... 💦</p>
+                            </div>
+                            <div class="card-icon">
+                                <i id="icon2" class="bi bi-fire"></i>
+                                <svg class="bed-icon" fill="#000000" width="2.2rem" height="2.2rem" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M5 10C3.347656 10 2 11.347656 2 13L2 26.8125C3.296875 25.6875 4.9375 24.777344 7 24.0625L7 20C7 17.339844 11.542969 17 15.5 17C19.457031 17 24 17.339844 24 20L24 22C24.335938 21.996094 24.65625 22 25 22C25.34375 22 25.664063 21.996094 26 22L26 20C26 17.339844 30.542969 17 34.5 17C38.457031 17 43 17.339844 43 20L43 24.03125C45.058594 24.742188 46.691406 25.671875 48 26.8125L48 13C48 11.347656 46.652344 10 45 10 Z M 25 24C5.90625 24 -0.015625 27.53125 0 37L50 37C50.015625 27.46875 44.09375 24 25 24 Z M 0 39L0 50L7 50L7 46C7 44.5625 7.5625 44 9 44L41 44C42.4375 44 43 44.5625 43 46L43 50L50 50L50 39Z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="scratch-card" id="scratchCard3">
+                        <h3 class="card-name">Sips, Dips, and Scoops</h3>
+                        <div class="scratch-content">
+                            <div class="card-header">
+                                <div class="card-detail">
+                                    <i class="bi bi-cash"></i>
+                                    <span id="amount3">$$$</span>
+                                    <i class="bi bi-clock"></i>
+                                    <span id="time3">5-6 Hours</span>
+                                </div>
+                            </div>
+                            <div class="card-activity" style="position: relative;">
+                                <canvas id="scratchCanvas3" class="scratch-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></canvas>
+                                <p id="activity3">Dress to impress and enjoy scenic views while we sip on delightful drinks. Then, warm up by dipping tender meats into savory bubbling broth at our favorite spot. Cap off the evening with a trip to Ghastly's for a dessert that'll make us scream with delight! Don't forget to laugh, kiss and hold hands!</p>
+                            </div>
+                            <div class="card-icon">
+                                <svg class="soup-icon" width="2.2rem" height="2.2rem" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" fill="none" stroke="#020202" stroke-miterlimit="10" stroke-width="1.91px" d="M2.43,11H21.57a0,0,0,0,1,0,0v0a7.65,7.65,0,0,1-7.65,7.65H10.09A7.65,7.65,0,0,1,2.43,11v0a0,0,0,0,1,0,0Z"/><path class="cls-1" fill="none" stroke="#020202" stroke-miterlimit="10" stroke-width="1.91px" d="M1.48,18.67h21a0,0,0,0,1,0,0v0A3.83,3.83,0,0,1,18.7,22.5H5.3a3.83,3.83,0,0,1-3.83-3.83v0a0,0,0,0,1,0,0Z"/><path class="cls-1" fill="none" stroke="#020202" stroke-miterlimit="10" stroke-width="1.91px" d="M7.22.5c0,1.11-1,1.11-1,2.23s1,1.12,1,2.23-1,1.12-1,2.24"/><path class="cls-1" fill="none" stroke="#020202" stroke-miterlimit="10" stroke-width="1.91px" d="M13,1.46c0,1.11-1,1.11-1,2.23s1,1.11,1,2.23S12,7,12,8.15"/><path class="cls-1" fill="none" stroke="#020202" stroke-miterlimit="10" stroke-width="1.91px" d="M18.7.5c0,1.11-1,1.11-1,2.23s1,1.12,1,2.23-1,1.12-1,2.24"/></svg>
+                                <i class="bi bi-brush"></i>
+                                <i class="fa-solid fa-ice-cream"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-message" id="finalMessage" style="display: none;">
+                    <h3 class="romantic-title">Can't wait for our date nights! 💕</h3>
+                    <p class="romantic-subtitle">I love you so much! ❤️</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal for loving messages -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="modal-hearts">💕</div>
+            <p class="modal-message" id="modalMessage"></p>
+            <button class="btn-primary" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script src="script.js?v=7"></script>
+</body>
+</html>

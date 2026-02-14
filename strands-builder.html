@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strands Puzzle Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FFD6E0 0%, #FFF5F7 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(232, 180, 184, 0.4);
+        }
+
+        h1 {
+            color: #FF6B9D;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .word-list {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .word-list h3 {
+            color: #6B4C4C;
+            margin-bottom: 10px;
+        }
+
+        .word-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .word-chip {
+            background: #FFD6E0;
+            color: #6B4C4C;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 2px solid #FFBFD3;
+        }
+
+        .word-chip.spangram {
+            background: linear-gradient(135deg, #E8B4B8 0%, #FF6B9D 100%);
+            color: white;
+            border: none;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #FF6B9D;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #FFBFD3;
+            transform: translateY(-2px);
+        }
+
+        .grid-container {
+            background: #FFF5F7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .strands-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .letter-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 3px solid #FFBFD3;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #6B4C4C;
+            cursor: grab;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .letter-cell:active {
+            cursor: grabbing;
+        }
+
+        .letter-cell:hover {
+            transform: scale(1.05);
+            border-color: #FF6B9D;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .letter-cell.dragging {
+            opacity: 0.5;
+        }
+
+        .letter-cell.drag-over {
+            background: #FFD6E0;
+            border-color: #FF6B9D;
+        }
+
+        .letter-cell.empty {
+            background: #F5F5F5;
+            border-style: dashed;
+        }
+
+        .output {
+            background: #6B4C4C;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .instructions {
+            background: #FFF5F7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #6B4C4C;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ Strands Puzzle Builder 💕</h1>
+
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ul>
+                <li><strong>Click any cell</strong> and type a letter (A-Z only)</li>
+                <li><strong>Arrow keys</strong> to navigate between cells</li>
+                <li><strong>Backspace/Delete</strong> to clear a cell</li>
+                <li><strong>Drag and drop</strong> to rearrange letters</li>
+                <li>Click <strong>"Reset"</strong> to fill grid with all word letters</li>
+                <li>Click <strong>"Shuffle"</strong> to randomize current letters</li>
+                <li>Click <strong>"Export Code"</strong> when done to copy the grid array</li>
+                <li>Screenshot the final grid to share!</li>
+            </ul>
+        </div>
+
+        <div class="controls">
+            <div class="word-list">
+                <h3>Target Words:</h3>
+                <div class="word-items">
+                    <span class="word-chip">ESPRESSO (8)</span>
+                    <span class="word-chip">LATTE (5)</span>
+                    <span class="word-chip">POUROVER (8)</span>
+                    <span class="word-chip">ARABICA (7)</span>
+                    <span class="word-chip">MUG (3)</span>
+                    <span class="word-chip">GRINDER (7)</span>
+                    <span class="word-chip spangram">COFFEETIME (10)</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #A87C7C;">Total: 48 letters (Grid: 48 squares) ✓</p>
+            </div>
+            <div class="buttons">
+                <button onclick="shuffleGrid()">🔀 Shuffle</button>
+                <button onclick="resetGrid()">🔄 Reset</button>
+                <button onclick="exportCode()">📋 Export Code</button>
+                <button onclick="clearGrid()">🗑️ Clear</button>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="strands-grid" id="grid"></div>
+        </div>
+
+        <div class="output" id="output" style="display: none;"></div>
+    </div>
+
+    <script>
+        // All letters from the words
+        const letters = 'ESPRESSOLATTEPOUROOVERARABICAMUGGRINDERCCOFFEETIME'.split('');
+
+        let grid = [];
+        let draggedElement = null;
+        let draggedIndex = null;
+
+        function initGrid() {
+            // Initialize with 48 empty cells (8 rows × 6 columns)
+            grid = Array(48).fill('');
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const gridElement = document.getElementById('grid');
+            gridElement.innerHTML = '';
+
+            grid.forEach((letter, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'letter-cell' + (letter ? '' : ' empty');
+                cell.textContent = letter || '';
+                cell.draggable = true;
+                cell.dataset.index = index;
+                cell.contentEditable = true;
+                cell.spellcheck = false;
+
+                // Click to focus and type
+                cell.addEventListener('click', function() {
+                    this.focus();
+                });
+
+                // Type a letter
+                cell.addEventListener('input', function(e) {
+                    let value = e.target.textContent.toUpperCase().replace(/[^A-Z]/g, '');
+                    if (value.length > 1) {
+                        value = value[value.length - 1]; // Keep only last letter
+                    }
+                    grid[index] = value;
+                    e.target.textContent = value;
+                    if (value) {
+                        e.target.classList.remove('empty');
+                    } else {
+                        e.target.classList.add('empty');
+                    }
+
+                    // Move cursor to end
+                    const range = document.createRange();
+                    const sel = window.getSelection();
+                    if (e.target.childNodes.length > 0) {
+                        range.setStart(e.target.childNodes[0], e.target.textContent.length);
+                        range.collapse(true);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+                });
+
+                // Keyboard navigation
+                cell.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' || e.key === 'Delete') {
+                        grid[index] = '';
+                        e.target.textContent = '';
+                        e.target.classList.add('empty');
+                    } else if (e.key === 'ArrowRight' && index < 47) {
+                        e.preventDefault();
+                        document.querySelector(`[data-index="${index + 1}"]`).focus();
+                    } else if (e.key === 'ArrowLeft' && index > 0) {
+                        e.preventDefault();
+                        document.querySelector(`[data-index="${index - 1}"]`).focus();
+                    } else if (e.key === 'ArrowDown' && index < 42) {
+                        e.preventDefault();
+                        document.querySelector(`[data-index="${index + 6}"]`).focus();
+                    } else if (e.key === 'ArrowUp' && index >= 6) {
+                        e.preventDefault();
+                        document.querySelector(`[data-index="${index - 6}"]`).focus();
+                    }
+                });
+
+                // Drag events
+                cell.addEventListener('dragstart', handleDragStart);
+                cell.addEventListener('dragover', handleDragOver);
+                cell.addEventListener('drop', handleDrop);
+                cell.addEventListener('dragenter', handleDragEnter);
+                cell.addEventListener('dragleave', handleDragLeave);
+                cell.addEventListener('dragend', handleDragEnd);
+
+                gridElement.appendChild(cell);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            draggedIndex = parseInt(e.target.dataset.index);
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            e.target.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.target.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            e.target.classList.remove('drag-over');
+
+            const dropIndex = parseInt(e.target.dataset.index);
+
+            if (draggedIndex !== dropIndex) {
+                // Swap letters
+                const temp = grid[draggedIndex];
+                grid[draggedIndex] = grid[dropIndex];
+                grid[dropIndex] = temp;
+                renderGrid();
+            }
+
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function shuffleGrid() {
+            // Fisher-Yates shuffle
+            for (let i = grid.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [grid[i], grid[j]] = [grid[j], grid[i]];
+            }
+            renderGrid();
+        }
+
+        function resetGrid() {
+            grid = letters.slice(0, 48);
+            renderGrid();
+        }
+
+        function clearGrid() {
+            grid = Array(48).fill('');
+            renderGrid();
+        }
+
+        function exportCode() {
+            const output = document.getElementById('output');
+
+            // Convert grid to 8 rows × 6 columns format
+            let code = 'grid: [\n';
+            for (let i = 0; i < 8; i++) {
+                const row = grid.slice(i * 6, (i + 1) * 6);
+                code += `    ['${row.join("', '")}'],\n`;
+            }
+            code += ']';
+
+            output.textContent = code;
+            output.style.display = 'block';
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ Code copied to clipboard!');
+            });
+        }
+
+        // Initialize on load
+        initGrid();
+    </script>
+</body>
+</html>
