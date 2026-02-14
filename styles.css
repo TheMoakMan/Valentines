@@ -572,23 +572,23 @@ body {
 
 .connections-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-sm);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
     margin-bottom: var(--spacing-md);
 }
 
 .word-button {
     background: var(--cream);
     border: 2px solid var(--rose-gold);
-    border-radius: var(--radius-sm);
-    padding: var(--spacing-sm);
+    border-radius: 8px;
+    padding: 8px 4px;
     font-family: var(--font-heading);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--text-dark);
     cursor: pointer;
     transition: all var(--transition);
-    min-height: 60px;
+    min-height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1136,6 +1136,7 @@ body {
     .word-button {
         font-size: 1rem;
         min-height: 80px;
+        padding: var(--spacing-md);
     }
 }
 
