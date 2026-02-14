@@ -815,8 +815,19 @@ function initScratchCard(cardNum) {
 
     // Set canvas size to match the card-activity container
     const activityDiv = canvas.parentElement;
-    canvas.width = activityDiv.offsetWidth;
-    canvas.height = activityDiv.offsetHeight;
+
+    // Get the actual rendered size of the parent element
+    const rect = activityDiv.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+    // Only draw if we have valid dimensions
+    if (canvas.width === 0 || canvas.height === 0) {
+        console.warn(`Canvas ${cardNum} has zero dimensions, retrying...`);
+        // Retry after a short delay to ensure DOM is fully rendered
+        setTimeout(() => initScratchCard(cardNum), 100);
+        return;
+    }
 
     // Draw scratch overlay
     ctx.fillStyle = '#000';
