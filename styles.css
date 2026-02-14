@@ -860,38 +860,38 @@ body {
 .wordle-keyboard {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     max-width: 500px;
     margin: 0 auto;
 }
 
 .keyboard-row {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     justify-content: center;
 }
 
 .key {
     background: var(--cream);
     border: 2px solid var(--rose-gold);
-    border-radius: var(--radius-sm);
-    padding: 14px;
+    border-radius: 6px;
+    padding: 10px 4px;
     font-family: var(--font-heading);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-dark);
     cursor: pointer;
     transition: all 0.2s;
-    min-width: 32px;
+    min-width: 26px;
     text-align: center;
     flex: 1;
-    max-width: 40px;
+    max-width: 34px;
 }
 
 .key.wide {
     flex: 1.5;
-    max-width: 65px;
-    font-size: 0.75rem;
+    max-width: 55px;
+    font-size: 0.65rem;
 }
 
 .key:active {
@@ -911,10 +911,11 @@ body {
 }
 
 .key.absent {
-    background: #DDD;
-    border-color: #DDD;
-    color: white;
-    opacity: 0.6;
+    background: #999;
+    border-color: #999;
+    color: #DDD;
+    opacity: 0.5;
+    cursor: default;
 }
 
 /* ========================================
