@@ -294,6 +294,19 @@ function closeModal() {
 }
 
 // ========================================
+// SECRET ROSE POPUP
+// ========================================
+window.showRosePopup = function() {
+    const popup = document.getElementById('rosePopup');
+    popup.classList.add('active');
+}
+
+window.closeRosePopup = function() {
+    const popup = document.getElementById('rosePopup');
+    popup.classList.remove('active');
+}
+
+// ========================================
 // CONNECTIONS GAME
 // ========================================
 function initConnections() {
