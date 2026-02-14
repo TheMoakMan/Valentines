@@ -572,7 +572,7 @@ body {
 
 .connections-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
 }
@@ -581,18 +581,20 @@ body {
     background: var(--cream);
     border: 2px solid var(--rose-gold);
     border-radius: var(--radius-sm);
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     font-family: var(--font-heading);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-dark);
     cursor: pointer;
     transition: all var(--transition);
-    min-height: 70px;
+    min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    word-wrap: break-word;
+    hyphens: auto;
 }
 
 .word-button:hover {
@@ -1126,6 +1128,7 @@ body {
     }
 
     .connections-grid {
+        grid-template-columns: repeat(4, 1fr);
         gap: var(--spacing-md);
     }
 
