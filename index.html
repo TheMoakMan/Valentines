@@ -305,59 +305,95 @@
     <div class="rose-popup" id="rosePopup">
         <div class="rose-popup-content">
             <button class="rose-popup-close" onclick="closeRosePopup()">×</button>
-            <svg class="rose-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <svg class="rose-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
                 <defs>
-                    <radialGradient id="roseGradient" cx="50%" cy="50%">
-                        <stop offset="0%" style="stop-color:#FF69B4;stop-opacity:1"/>
-                        <stop offset="50%" style="stop-color:#FF1493;stop-opacity:0.9"/>
-                        <stop offset="100%" style="stop-color:#C71585;stop-opacity:0.8"/>
-                    </radialGradient>
-                    <radialGradient id="petalGradient" cx="30%" cy="30%">
-                        <stop offset="0%" style="stop-color:#FFB6C1;stop-opacity:1"/>
-                        <stop offset="100%" style="stop-color:#FF69B4;stop-opacity:1"/>
-                    </radialGradient>
-                    <linearGradient id="stemGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1"/>
-                        <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1"/>
+                    <!-- Holographic gradient for petals -->
+                    <linearGradient id="holoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FF1493;stop-opacity:1">
+                            <animate attributeName="stop-color" values="#FF1493;#FF69B4;#FFB6C1;#FF69B4;#FF1493" dur="3s" repeatCount="indefinite"/>
+                        </stop>
+                        <stop offset="50%" style="stop-color:#FF69B4;stop-opacity:1">
+                            <animate attributeName="stop-color" values="#FF69B4;#FFB6C1;#FF1493;#FFB6C1;#FF69B4" dur="3s" repeatCount="indefinite"/>
+                        </stop>
+                        <stop offset="100%" style="stop-color:#FFB6C1;stop-opacity:1">
+                            <animate attributeName="stop-color" values="#FFB6C1;#FF1493;#FF69B4;#FF1493;#FFB6C1" dur="3s" repeatCount="indefinite"/>
+                        </stop>
                     </linearGradient>
+
+                    <!-- Stem gradient -->
+                    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#228B22"/>
+                        <stop offset="100%" style="stop-color:#006400"/>
+                    </linearGradient>
+
+                    <!-- Glass dome gradient -->
+                    <radialGradient id="glassGrad" cx="50%" cy="30%">
+                        <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3"/>
+                        <stop offset="70%" style="stop-color:#87CEEB;stop-opacity:0.15"/>
+                        <stop offset="100%" style="stop-color:#4682B4;stop-opacity:0.2"/>
+                    </radialGradient>
                 </defs>
 
-                <!-- Main Rose Bloom -->
-                <g transform="translate(100,80)">
-                    <!-- Outer petals -->
-                    <ellipse cx="-30" cy="-20" rx="28" ry="22" fill="url(#petalGradient)" transform="rotate(-45 -30 -20)"/>
-                    <ellipse cx="30" cy="-20" rx="28" ry="22" fill="url(#petalGradient)" transform="rotate(45 30 -20)"/>
-                    <ellipse cx="-35" cy="10" rx="28" ry="22" fill="url(#petalGradient)" transform="rotate(-80 -35 10)"/>
-                    <ellipse cx="35" cy="10" rx="28" ry="22" fill="url(#petalGradient)" transform="rotate(80 35 10)"/>
-                    <ellipse cx="0" cy="-35" rx="26" ry="20" fill="url(#petalGradient)"/>
-                    <ellipse cx="0" cy="25" rx="26" ry="20" fill="url(#petalGradient)" transform="rotate(180 0 25)"/>
+                <!-- Side view rose inspired by Beauty and the Beast -->
+                <g transform="translate(150, 150)">
 
-                    <!-- Middle petals -->
-                    <ellipse cx="-18" cy="-15" rx="22" ry="18" fill="#FF69B4" transform="rotate(-30 -18 -15)"/>
-                    <ellipse cx="18" cy="-15" rx="22" ry="18" fill="#FF69B4" transform="rotate(30 18 -15)"/>
-                    <ellipse cx="-20" cy="8" rx="22" ry="18" fill="#FF69B4" transform="rotate(-60 -20 8)"/>
-                    <ellipse cx="20" cy="8" rx="22" ry="18" fill="#FF69B4" transform="rotate(60 20 8)"/>
+                    <!-- Stem -->
+                    <rect x="-4" y="40" width="8" height="120" fill="url(#stemGrad)" rx="2"/>
 
-                    <!-- Center petals -->
-                    <ellipse cx="0" cy="-8" rx="18" ry="15" fill="url(#roseGradient)"/>
-                    <ellipse cx="-10" cy="0" rx="16" ry="14" fill="url(#roseGradient)" transform="rotate(-20 -10 0)"/>
-                    <ellipse cx="10" cy="0" rx="16" ry="14" fill="url(#roseGradient)" transform="rotate(20 10 0)"/>
+                    <!-- Thorns -->
+                    <path d="M-4,80 L-10,75 L-4,78 Z" fill="#004d00"/>
+                    <path d="M4,100 L10,95 L4,98 Z" fill="#004d00"/>
+                    <path d="M-4,120 L-10,115 L-4,118 Z" fill="#004d00"/>
 
-                    <!-- Rose center -->
-                    <circle cx="0" cy="0" r="12" fill="#C71585"/>
-                    <path d="M-6,-4 Q-2,-8 2,-6 Q6,-4 4,0 Q2,4 -2,2 Q-6,0 -6,-4 Z" fill="#8B0065"/>
+                    <!-- Leaves -->
+                    <ellipse cx="-15" cy="90" rx="12" ry="8" fill="#228B22" transform="rotate(-30 -15 90)"/>
+                    <path d="M-15,90 L-10,92" stroke="#006400" stroke-width="1"/>
+
+                    <ellipse cx="15" cy="110" rx="12" ry="8" fill="#228B22" transform="rotate(30 15 110)"/>
+                    <path d="M15,110 L10,112" stroke="#006400" stroke-width="1"/>
+
+                    <!-- Rose bloom - side view with layered petals -->
+
+                    <!-- Back outer petal -->
+                    <path d="M-25,-10 Q-35,-25 -30,-45 Q-20,-55 -5,-50 L-10,-15 Z"
+                          fill="url(#holoGradient)" opacity="0.9" stroke="#C71585" stroke-width="1"/>
+
+                    <!-- Left outer petal -->
+                    <path d="M-30,-5 Q-45,-10 -50,-25 Q-45,-40 -25,-35 L-15,-10 Z"
+                          fill="url(#holoGradient)" opacity="0.95" stroke="#FF1493" stroke-width="1"/>
+
+                    <!-- Top outer petal -->
+                    <path d="M-5,-45 Q0,-60 15,-60 Q25,-50 20,-35 L0,-30 Z"
+                          fill="url(#holoGradient)" stroke="#FF1493" stroke-width="1"/>
+
+                    <!-- Right outer petal -->
+                    <path d="M20,-30 Q35,-35 40,-20 Q35,-5 20,-10 L10,-25 Z"
+                          fill="url(#holoGradient)" stroke="#FF1493" stroke-width="1"/>
+
+                    <!-- Center petals (tightly rolled) -->
+                    <path d="M-8,-25 Q-15,-30 -10,-40 Q-5,-35 0,-30 Z"
+                          fill="#FF1493" stroke="#C71585" stroke-width="0.5"/>
+                    <path d="M0,-30 Q5,-35 10,-30 Q8,-20 0,-25 Z"
+                          fill="#FF69B4" stroke="#FF1493" stroke-width="0.5"/>
+                    <path d="M-5,-15 Q0,-25 5,-20 Q5,-10 0,-15 Z"
+                          fill="#FFB6C1" stroke="#FF69B4" stroke-width="0.5"/>
+
+                    <!-- Inner curl (the distinctive Beauty and the Beast rose center) -->
+                    <circle cx="0" cy="-20" r="6" fill="#C71585" opacity="0.8"/>
+                    <path d="M-2,-20 Q0,-25 2,-20 Q0,-15 -2,-20 Z" fill="#8B0065"/>
+
+                    <!-- Petal highlights (holographic shimmer) -->
+                    <ellipse cx="-20" cy="-30" rx="8" ry="4" fill="#FFB6C1" opacity="0.5" transform="rotate(-30 -20 -30)"/>
+                    <ellipse cx="10" cy="-40" rx="6" ry="3" fill="#FFFFFF" opacity="0.6" transform="rotate(20 10 -40)"/>
+
+                    <!-- Base of bloom -->
+                    <ellipse cx="0" cy="5" rx="18" ry="10" fill="#228B22" opacity="0.9"/>
+                    <path d="M-15,0 Q-10,8 0,10 Q10,8 15,0" stroke="#006400" stroke-width="1" fill="none"/>
                 </g>
 
-                <!-- Stem -->
-                <rect x="96" y="100" width="8" height="80" fill="url(#stemGradient)" rx="3"/>
-
-                <!-- Leaves -->
-                <path d="M96,130 Q70,125 65,135 Q70,145 96,138 Z" fill="#4CAF50"/>
-                <path d="M104,150 Q130,145 135,155 Q130,165 104,158 Z" fill="#4CAF50"/>
-
-                <!-- Leaf veins -->
-                <path d="M96,133 Q75,130 70,135" stroke="#2E7D32" stroke-width="1" fill="none"/>
-                <path d="M104,153 Q125,150 130,155" stroke="#2E7D32" stroke-width="1" fill="none"/>
+                <!-- Glass dome effect (optional) -->
+                <ellipse cx="150" cy="130" rx="80" ry="100" fill="url(#glassGrad)" opacity="0.3" stroke="#87CEEB" stroke-width="2"/>
+                <path d="M150,230 Q70,230 70,130" stroke="#FFFFFF" stroke-width="2" fill="none" opacity="0.4"/>
             </svg>
         </div>
     </div>
