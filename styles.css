@@ -273,15 +273,15 @@ body {
 .btn-primary, .btn-secondary, .btn-next {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1rem;
-    padding: 14px 28px;
+    font-size: 0.85rem;
+    padding: 10px 16px;
     border: none;
-    border-radius: var(--radius-lg);
+    border-radius: 20px;
     cursor: pointer;
     transition: all var(--transition);
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: 6px;
     box-shadow: var(--shadow-sm);
 }
 
@@ -322,8 +322,8 @@ body {
     margin-top: var(--spacing-lg);
     width: 100%;
     justify-content: center;
-    font-size: 1.1rem;
-    padding: 18px 32px;
+    font-size: 1rem;
+    padding: 14px 24px;
 }
 
 .btn-next:hover {
@@ -1137,6 +1137,17 @@ body {
         font-size: 1rem;
         min-height: 80px;
         padding: var(--spacing-md);
+    }
+
+    .btn-primary, .btn-secondary, .btn-next {
+        font-size: 1rem;
+        padding: 14px 28px;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-next {
+        font-size: 1.1rem;
+        padding: 18px 32px;
     }
 }
 
